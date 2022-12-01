@@ -10,11 +10,9 @@ import com.glpserver.glp.service.LessonService;
 import com.glpserver.glp.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.Email;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +28,7 @@ public class LessonServiceImpl implements LessonService {
 	private final LessonEntityRepository lessonRepo;
 	private final LessonMapper lessonMapper;
 	private final StudentService studentService;
+
 	@Override
 	public Optional<LessonEntity> createNewLesson(LessonDto lessonDto) {
 		log.info("Create new lesson ...");
@@ -148,33 +147,6 @@ public class LessonServiceImpl implements LessonService {
 
 		return lessonEntityOpt;
 	}
-
-//	@Override
-//	public Optional<LessonEntity> findLessonByStudentFirstNameAndStudentLastNameAndLessonNumber(String studentFirstName, String studentLastName, Integer lessonNumber) {
-//		log.info("Find lesson by student name and lesson number ...");
-//
-//		if (studentFirstName == null || studentLastName == null || lessonNumber == null) {
-//			log.error("Finding lesson: FAILED [studentFirstName:null OR studentLastName:null OR lessonNumber:null]");
-//			return Optional.empty();
-//		}
-//
-//		StudentEntity studentEntity;
-//		var studentEntityOpt = studentService.findStudentByFirstNameAndLastName(studentFirstName, studentLastName);
-//		if (studentEntityOpt.isPresent()) {
-//			studentEntity = studentEntityOpt.get();
-//			log.info("Finding student: name=[{} {}] was identified", studentEntity.getFirstName(), studentEntity.getLastName());
-//		} else {
-//			log.info("Finding student: FAILED [Unable to identify object : studentDto name={} {}]", studentFirstName, studentLastName);
-//			return Optional.empty();
-//		}
-//
-//		var lessonEntityOpt = lessonRepo.findLessonByStudentAndLessonNumber(studentEntity, lessonNumber);
-//		if (lessonEntityOpt.isPresent())
-//			log.info("Finding lesson with number {}: SUCCESSFUL [ID=[{}] found in DB]", lessonNumber, lessonEntityOpt.get().getId());
-//		else log.error("Finding lesson: FAILED [lesson number=[{}] not found in DB]", lessonNumber);
-//
-//		return lessonEntityOpt;
-//	}
 
 	@Override
 	public Optional<LessonEntity> findLessonByStudentFirstNameAndStudentLastNameAndLessonNumber(String studentFirstName, String studentLastName, Integer lessonNumber) {

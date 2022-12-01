@@ -125,42 +125,6 @@ public class StudentServiceImpl implements StudentService {
 		return studentEntityOpt;
 	}
 
-//	@Override
-//	public Optional<StudentEntity> deleteStudentByEmail(String studentEmail) {
-//		log.info("Delete student by email ...");
-//
-//		if (studentEmail == null) {
-//			log.info("Deleting student: FAILED [studentEmail:null]");
-//			return Optional.empty();
-//		}
-//
-//		Optional<StudentEntity> studentEntityOpt = studentRepo.findStudentByEmail(studentEmail);
-//		if (studentEntityOpt.isPresent()) {
-//			studentRepo.deleteById(studentEntityOpt.get().getId());
-//			log.info("Deleting student: SUCCESSFUL [student email=[{}]", studentEntityOpt.get().getId());
-//		} else log.info("Deleting student: FAILED [student email=[{}] not found ]", studentEmail);
-//
-//		return studentEntityOpt;
-//	}
-
-//	@Override
-//	public Optional<StudentEntity> deleteStudentByFirstNameAndLastName(String studentFirstName, String studentLastName) {
-//		log.info("Delete student by first name and last name ...");
-//
-//		if (studentFirstName == null || studentLastName == null) {
-//			log.info("Deleting student: FAILED [studentFirstName:null OR studentLastName:null]");
-//			return Optional.empty();
-//		}
-//
-//		Optional<StudentEntity> studentEntityOpt = studentRepo.findStudentByFirstNameAndLastName(studentFirstName, studentLastName);
-//		if (studentEntityOpt.isPresent()) {
-//			studentRepo.deleteById(studentEntityOpt.get().getId());
-//			log.info("Deleting student: SUCCESSFUL [student name=[{} {}]", studentEntityOpt.get().getFirstName(), studentEntityOpt.get().getFirstName());
-//		} else log.info("Deleting student: FAILED [student name=[{} {}] not found ]", studentFirstName, studentLastName);
-//
-//		return studentEntityOpt;
-//	}
-
 	@Override
 	public Optional<StudentEntity> deleteStudentByEmail(String studentEmail) {
 		log.info("Delete student by email ...");

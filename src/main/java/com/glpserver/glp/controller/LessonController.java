@@ -2,7 +2,6 @@ package com.glpserver.glp.controller;
 
 import com.glpserver.glp.domain.dto.LessonDto;
 import com.glpserver.glp.domain.dto.StudentDto;
-import com.glpserver.glp.domain.entity.LessonEntity;
 import com.glpserver.glp.domain.mapper.LessonMapper;
 import com.glpserver.glp.service.LessonService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -27,37 +25,12 @@ public class LessonController {
 	@PostMapping
 	public ResponseEntity<LessonDto> createNewLesson(@RequestBody LessonDto lessonDto) {
 		var lessonEntityOpt = lessonService.createNewLesson(lessonDto);
-//		return lessonEntityOpt.map(lessonEntity -> ResponseEntity.of(Optional.of(lessonMapper.toDto(lessonEntity)))).orElseGet(() -> ResponseEntity.of(Optional.empty()));
 		return ResponseEntity.of(lessonEntityOpt.map(lessonMapper::toDto));
 	}
 
 	@GetMapping
 	public ResponseEntity<List<LessonDto>> findAllLessons() {
 		var lessonEntitiesOpt = lessonService.findAllLessons();
-//		if (lessonEntitiesOpt.isPresent()) {
-//			var lessonEntities = lessonEntitiesOpt.get();
-//			var lessonDtos = lessonEntities.stream().map(lessonMapper::toDto).collect(Collectors.toList());
-//			var lessonDtosOpt = Optional.of(lessonDtos);
-//			return ResponseEntity.of(lessonDtosOpt);
-//		}
-//
-//		return ResponseEntity.of(Optional.empty());
-
-
-//		return lessonEntitiesOpt
-//				.map(list -> ResponseEntity.of(
-//						Optional.of(
-//								list.stream().map(lessonMapper::toDto).collect(Collectors.toList())
-//						))
-//				)
-//				.orElseGet(() -> ResponseEntity.of(Optional.empty()));
-
-//		return lessonEntitiesOpt
-//				.map(lessonEntities -> lessonEntities.stream().map(lessonMapper::toDto).collect(Collectors.toList()))
-//				.map(Optional::of)
-//				.map(ResponseEntity::of)
-//				.orElseGet(() -> ResponseEntity.of(Optional.empty()));
-
 		return ResponseEntity.of(lessonEntitiesOpt.map(lessonEntities -> lessonEntities.stream().map(lessonMapper::toDto).collect(Collectors.toList())));
 	}
 
@@ -67,7 +40,7 @@ public class LessonController {
 		return ResponseEntity.of(lessonEntitiesOpt.map(lessonEntities -> lessonEntities.stream().map(lessonMapper::toDto).collect(Collectors.toList())));
 	}
 
-	@GetMapping("/{lessonId}")
+	@GetMapping("/id/{lessonId}")
 	public ResponseEntity<LessonDto> findLessonById(@PathVariable Long lessonId) {
 		var lessonEntityOpt = lessonService.findLessonById(lessonId);
 		return ResponseEntity.of(lessonEntityOpt.map(lessonMapper::toDto));
@@ -97,7 +70,7 @@ public class LessonController {
 		return ResponseEntity.of(lessonEntityOpt.map(lessonMapper::toDto));
 	}
 
-	@DeleteMapping("/{lessonId}")
+	@DeleteMapping("/id/{lessonId}")
 	public ResponseEntity<LessonDto> deleteLessonById(@PathVariable Long lessonId) {
 		var lessonEntityOpt = lessonService.deleteLessonById(lessonId);
 		return ResponseEntity.of(lessonEntityOpt.map(lessonMapper::toDto));
