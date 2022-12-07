@@ -82,7 +82,7 @@ public class LessonController {
 		return ResponseEntity.of(lessonEntityOpt.map(lessonMapper::toDto));
 	}
 
-	public static class HelperStudentAndLessonNumber {
+	static class HelperStudentAndLessonNumber {
 		Integer lessonNumber;
 		StudentDto studentDto;
 	}

@@ -236,13 +236,15 @@ public class LessonServiceImpl implements LessonService {
 				log.info("Updating lesson: FAILED [Unable to identify object to update : lessonDto ID={}]", lessonDto.getId());
 				return Optional.empty();
 			}
-		} else if (lessonDto.getStudent() != null && lessonDto.getLessonNumber() > 0) {
-			var studentEntityOpt = findLessonByStudentAndLessonNumber(lessonDto.getStudent(), lessonDto.getLessonNumber());
+		} else if (lessonDto.getStudentId() != null && lessonDto.getLessonNumber() > 0) {
+			var studentEntityOpt = findLessonByStudentIdAndLessonNumber(lessonDto.getStudentId(), lessonDto.getLessonNumber());
 			if (studentEntityOpt.isPresent()) {
 				lessonEntity = studentEntityOpt.get();
 				log.info("Updating lesson: student=[{}] and lessonNumber=[{}] was identified", lessonEntity.getStudent(), lessonEntity.getLessonNumber());
 			} else {
-				log.info("Updating lesson: FAILED [Unable to identify object to update : student=[{}] and lessonNumber=[{}]]", lessonDto.getStudent(), lessonDto.getLessonNumber());
+				var firstName = lessonMapper.toEntity(lessonDto).getStudent().getFirstName();
+				var lastName = lessonMapper.toEntity(lessonDto).getStudent().getLastName();
+				log.info("Updating lesson: FAILED [Unable to identify object to update : student=[{} {}] and lessonNumber=[{}]]", firstName, lastName, lessonDto.getLessonNumber());
 				return Optional.empty();
 			}
 		} else {

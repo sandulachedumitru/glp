@@ -25,12 +25,12 @@ public class StudentEntity {
 
 	private LocalDateTime createdAt = LocalDateTime.now();
 
-	private String firstName;
-	private String lastName;
+	private String firstName = "";
+	private String lastName = "";
 
 	@Column(unique = true)
-	private String email;
+	private String email = "";
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<LessonEntity> lessons = new HashSet<>();
+	private Set<LessonEntity> lessons;
 }

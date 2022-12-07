@@ -27,6 +27,6 @@ public class LessonEntity {
 
 	private int lessonNumber;
 	private LocalDateTime createdAt = LocalDateTime.now();
-	private String content;
-	private String homework;
+	private String content = "";
+	private String homework = "";
 }

@@ -1,5 +1,6 @@
 package com.glpserver.glp.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.glpserver.glp.domain.entity.StudentEntity;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
@@ -14,11 +15,13 @@ import java.util.Set;
  */
 
 @Data
+
 public class StudentDto implements Serializable {
-	@NotNull private Long id;
+	private Long id;
 	@NotNull private LocalDateTime createdAt = LocalDateTime.now();
 	@NotNull private String firstName;
-	@NotNull private String lastName;
-	@NotNull private String email;
-	@NotNull private Set<LessonDto> lessons;
+	private String lastName;
+	private String email;
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private Set<LessonDto> lessons;
 }

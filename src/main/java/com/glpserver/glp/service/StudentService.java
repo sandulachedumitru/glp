@@ -24,5 +24,5 @@ public interface StudentService {
 	Optional<StudentEntity> deleteStudentByEmail(@NonNull String studentEmail);
 	Optional<StudentEntity> deleteStudentByFirstNameAndLastName(@NonNull String studentFirstName, @NonNull String studentLastName);
 
-	Optional<StudentEntity> updateStudent(@NonNull  StudentDto studentDto);
+	Optional<StudentEntity> updateStudent(@NonNull  StudentDto fromStudentDto, @NonNull StudentDto toStudentDto);
 }

@@ -112,7 +112,7 @@ public class StudentServiceImpl implements StudentService {
 		log.info("Delete student by ID ...");
 
 		if (studentId == null) {
-			log.info("Deleting student: FAILED [studentId:null]");
+			log.error("Deleting student: FAILED [studentId:null]");
 			return Optional.empty();
 		}
 
@@ -120,7 +120,7 @@ public class StudentServiceImpl implements StudentService {
 		if (studentEntityOpt.isPresent()) {
 			studentRepo.deleteById(studentId);
 			log.info("Deleting student: SUCCESSFUL [ID={}]", studentEntityOpt.get().getId());
-		} else log.info("Deleting student: FAILED [ID={} not found ]", studentId);
+		} else log.error("Deleting student: FAILED [ID={} not found ]", studentId);
 
 		return studentEntityOpt;
 	}
@@ -130,14 +130,15 @@ public class StudentServiceImpl implements StudentService {
 		log.info("Delete student by email ...");
 
 		if (studentEmail == null) {
-			log.info("Deleting student: FAILED [studentEmail:null]");
+			log.error("Deleting student: FAILED [studentEmail:null]");
 			return Optional.empty();
 		}
 
-		var studentEntityOpt = studentRepo.deleteStudentByEmail(studentEmail);
-		if (studentEntityOpt.isPresent())
-			log.info("Deleting student: SUCCESSFUL [student email=[{}]", studentEntityOpt.get().getId());
-		else log.info("Deleting student: FAILED [student email=[{}] not found ]", studentEmail);
+		var studentEntityOpt = findStudentByEmail(studentEmail);
+		if (studentEntityOpt.isPresent()) {
+			studentRepo.deleteStudentByEmail(studentEmail);
+			log.info("Deleting student: SUCCESSFUL [student email=[{}]", studentEntityOpt.get().getEmail());
+		} else log.error("Deleting student: FAILED [student email=[{}] not found ]", studentEmail);
 
 		return studentEntityOpt;
 	}
@@ -147,69 +148,76 @@ public class StudentServiceImpl implements StudentService {
 		log.info("Delete student by first name and last name ...");
 
 		if (studentFirstName == null || studentLastName == null) {
-			log.info("Deleting student: FAILED [studentFirstName:null OR studentLastName:null]");
+			log.error("Deleting student: FAILED [studentFirstName:null OR studentLastName:null]");
 			return Optional.empty();
 		}
 
-		var studentEntityOpt = studentRepo.deleteStudentByFirstNameAndLastName(studentFirstName, studentLastName);
-		if (studentEntityOpt.isPresent())
+		var studentEntityOpt = findStudentByFirstNameAndLastName(studentFirstName, studentLastName);
+		if (studentEntityOpt.isPresent()) {
+			studentRepo.deleteStudentByFirstNameAndLastName(studentFirstName, studentLastName);
 			log.info("Deleting student: SUCCESSFUL [student name=[{} {}]", studentEntityOpt.get().getFirstName(), studentEntityOpt.get().getFirstName());
+		}
 		else
-			log.info("Deleting student: FAILED [student name=[{} {}] not found ]", studentFirstName, studentLastName);
+			log.error("Deleting student: FAILED [student name=[{} {}] not found ]", studentFirstName, studentLastName);
 
 		return studentEntityOpt;
 	}
 
 	@Override
-	public Optional<StudentEntity> updateStudent(StudentDto studentDto) {
+	public Optional<StudentEntity> updateStudent(StudentDto fromStudentDto, StudentDto toStudentDto) {
 		log.info("Update student ...");
 
-		if (studentDto == null) {
-			log.info("Updating student: FAILED [studentDto:null]");
+		if (fromStudentDto == null || toStudentDto == null) {
+			log.error("Updating student: FAILED [fromStudentDto:null OR toStudentDto:null]");
+			return Optional.empty();
+		}
+		if (toStudentDto.getFirstName() == null && toStudentDto.getLastName() == null) {
+			log.error("Updating student: FAILED [firstName and lastName cannot both be null]");
 			return Optional.empty();
 		}
 
 		StudentEntity studentEntity;
-		if (studentDto.getId() != null) {
-			var studentEntityOpt = findStudentById(studentDto.getId());
+		if (fromStudentDto.getId() != null) {
+			var studentEntityOpt = findStudentById(fromStudentDto.getId());
 			if (studentEntityOpt.isPresent()) {
 				studentEntity = studentEntityOpt.get();
 				log.info("Updating student: ID=[{}] was identified", studentEntity.getId());
 			} else {
-				log.info("Updating student: FAILED [Unable to identify object to update : studentDto ID={}]", studentDto.getId());
+				log.error("Updating student: FAILED [Unable to identify object to update : fromStudentDto ID={}]", fromStudentDto.getId());
 				return Optional.empty();
 			}
-		} else if (studentDto.getEmail() != null) {
-			var studentEntityOpt = findStudentByEmail(studentDto.getEmail());
+		} else if (fromStudentDto.getEmail() != null) {
+			var studentEntityOpt = findStudentByEmail(fromStudentDto.getEmail());
 			if (studentEntityOpt.isPresent()) {
 				studentEntity = studentEntityOpt.get();
 				log.info("Updating student: email=[{}] was identified", studentEntity.getEmail());
 			} else {
-				log.info("Updating student: FAILED [Unable to identify object to update : studentDto email={}]", studentDto.getEmail());
+				log.error("Updating student: FAILED [Unable to identify object to update : fromStudentDto email={}]", fromStudentDto.getEmail());
 				return Optional.empty();
 			}
-		} else if (studentDto.getFirstName() != null && studentDto.getLastName() != null) {
-			var studentEntityOpt = findStudentByFirstNameAndLastName(studentDto.getFirstName(), studentDto.getLastName());
+		} else if (fromStudentDto.getFirstName() != null && fromStudentDto.getLastName() != null) {
+			var studentEntityOpt = findStudentByFirstNameAndLastName(fromStudentDto.getFirstName(), fromStudentDto.getLastName());
 			if (studentEntityOpt.isPresent()) {
 				studentEntity = studentEntityOpt.get();
 				log.info("Updating student: name=[{} {}] was identified", studentEntity.getFirstName(), studentEntity.getLastName());
 			} else {
-				log.info("Updating student: FAILED [Unable to identify object to update : studentDto name={} {}]", studentDto.getFirstName(), studentDto.getLastName());
+				log.error("Updating student: FAILED [Unable to identify object to update : fromStudentDto name={} {}]", fromStudentDto.getFirstName(), fromStudentDto.getLastName());
 				return Optional.empty();
 			}
 		} else {
-			log.info("Updating student: FAILED [student not found in DB : {}", studentDto);
+			log.error("Updating student: FAILED [student not found in DB : {}", fromStudentDto);
 			return Optional.empty();
 		}
 
-		var studentEntityToUpdate = studentMapper.toEntity(studentDto);
-		studentEntityToUpdate.setId(studentEntity.getId());
-		studentEntityToUpdate.setCreatedAt(studentEntity.getCreatedAt());
-		studentEntityToUpdate.setLessons(studentEntity.getLessons());
+		// unchangeable fields: id, createdAt, lessons
+		// changeable fields: firstName, lastName, email
+		studentEntity.setFirstName(toStudentDto.getFirstName());
+		studentEntity.setLastName(toStudentDto.getLastName());
+		studentEntity.setEmail(toStudentDto.getEmail());
 
-		var updatedStudent = studentRepo.save(studentEntityToUpdate);
-		log.info("Updating student: SUCCESSFUL : [Found ID={} in DB]", updatedStudent.getId());
+		var updatedStudentEntity = studentRepo.save(studentEntity);
+		log.info("Updating student: SUCCESSFUL : [Found ID={} in DB]", updatedStudentEntity.getId());
 
-		return Optional.of(studentEntityToUpdate);
+		return Optional.of(studentEntity);
 	}
 }

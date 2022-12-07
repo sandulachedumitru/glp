@@ -70,8 +70,13 @@ public class StudentController {
 	}
 
 	@PutMapping
-	public ResponseEntity<StudentDto> updateStudent(@RequestBody StudentDto studentDto) {
-		var studentEntityOpt = studentService.updateStudent(studentDto);
+	public ResponseEntity<StudentDto> updateStudent(@RequestBody HelperUpdateStudent helper) {
+		var studentEntityOpt = studentService.updateStudent(helper.fromStudentDto, helper.toStudentDto);
 		return ResponseEntity.of(studentEntityOpt.map(studentMapper::toDto));
+	}
+
+	public static class HelperUpdateStudent {
+		public StudentDto fromStudentDto;
+		public StudentDto toStudentDto;
 	}
 }

@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 
 @Data
 public class LessonDto implements Serializable {
-	@NotNull private Long id;
-	@NotNull private StudentDto student;
-	@NotNull private int lessonNumber;
-	@NotNull private LocalDateTime createdAt = LocalDateTime.now();
-	@NotNull private String content;
-	@NotNull private String homework;
+	private Long id;
+	private Long studentId;
+	private int lessonNumber;
+	private LocalDateTime createdAt = LocalDateTime.now();
+	private String content = "";
+	private String homework = "";
 }
