@@ -3,8 +3,8 @@ package com.glpserver.glp.service.impl;
 import com.glpserver.glp.domain.dto.StudentDto;
 import com.glpserver.glp.domain.entity.StudentEntity;
 import com.glpserver.glp.domain.mapper.StudentMapper;
+import com.glpserver.glp.repository.LessonEntityRepository;
 import com.glpserver.glp.repository.StudentEntityRepository;
-import com.glpserver.glp.service.LessonService;
 import com.glpserver.glp.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ import java.util.Optional;
 public class StudentServiceImpl implements StudentService {
 	private final StudentEntityRepository studentRepo;
 	private final StudentMapper studentMapper;
-	private final LessonService lessonService;
+	private final LessonEntityRepository lessonRepo;
 
 	@Override
 	public Optional<StudentEntity> createNewStudent(StudentDto studentDto) {
@@ -131,12 +131,14 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	private void deleteStudentLessonList(Long studentId) {
-		var lessonEntitiesOpt = lessonService.findLessonsByStudentId(studentId);
+		var lessonEntitiesOpt = lessonRepo.findLessonsByStudentId(studentId);
 		if (lessonEntitiesOpt.isPresent()) {
-			for (var lessonEntity : lessonEntitiesOpt.get())
-				lessonService.deleteLessonById(lessonEntity.getId());
+			log.info("Delete lessons for student with ID=[{}]", studentId);
+			for (var lessonEntity : lessonEntitiesOpt.get()) {
+				log.info("- delete lesson id=[{}]", lessonEntity.getId());
+				lessonRepo.deleteById(lessonEntity.getId());
+			}
 		}
-
 	}
 
 	@Override

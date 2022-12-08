@@ -99,7 +99,7 @@ public class LessonServiceImpl implements LessonService {
 
 		var studentEntity = studentService.findStudentById(studentId).orElse(null);
 		if (studentEntity == null) {
-			log.error("Creating new lesson: FAILED [student id=[{}] not found]", studentId);
+			log.error("Finding all lesson:: FAILED [student id=[{}] not found]", studentId);
 			return Optional.empty();
 		}
 
