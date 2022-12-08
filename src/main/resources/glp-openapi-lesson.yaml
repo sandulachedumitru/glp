@@ -1,0 +1,254 @@
+openapi: "3.0.3"
+info:
+  title: "GLP Server API"
+  description: "Guitar Lesson Planner Server API"
+  version: "1.0.0"
+servers:
+  - url: "https://glp"
+paths:
+  /lesson:
+    post:
+      summary: "POST lesson"
+      operationId: "createNewLesson"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LessonDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+    get:
+      summary: "GET lesson"
+      operationId: "findAllLessons"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+    put:
+      summary: "PUT lesson"
+      operationId: "updateLesson"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HelperLessonUpdate"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+  /lesson/student/{studentId}:
+    get:
+      summary: "GET lesson/student/{studentId}"
+      operationId: "findLessonsByStudentId"
+      parameters:
+        - name: "studentId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+  /lesson/id/{lessonId}:
+    get:
+      summary: "GET lesson/id/{lessonId}"
+      operationId: "findLessonById"
+      parameters:
+        - name: "lessonId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+    delete:
+      summary: "DELETE lesson/id/{lessonId}"
+      operationId: "deleteLessonById"
+      parameters:
+        - name: "lessonId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+  /lesson/student-and-lessonNumber:
+    get:
+      summary: "GET lesson/student-and-lessonNumber"
+      operationId: "findLessonByStudentAndLessonNumber"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HelperStudentAndLessonNumber"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+  /lesson/student-firstName-lastName-and-lessonNumber:
+    get:
+      summary: "GET lesson/student-firstName-lastName-and-lessonNumber"
+      operationId: "findLessonByStudentFirstNameAndStudentLastNameAndLessonNumber"
+      parameters:
+        - name: "studentFirstName"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+        - name: "studentLastName"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+        - name: "lessonNumber"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+  /lesson/student-id-and-lessonNumber:
+    get:
+      summary: "GET lesson/student-id-and-lessonNumber"
+      operationId: "findLessonByStudentIdAndLessonNumber"
+      parameters:
+        - name: "studentId"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "lessonNumber"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+  /lesson/student-email-and-lessonNumber:
+    get:
+      summary: "GET lesson/student-email-and-lessonNumber"
+      operationId: "findLessonByStudentEmailAndLessonNumber"
+      parameters:
+        - name: "studentEmail"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+        - name: "lessonNumber"
+          in: "query"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+components:
+  schemas:
+    StudentDto:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        createdAt:
+          type: "string"
+          format: "date"
+        firstName:
+          type: "string"
+        lastName:
+          type: "string"
+        email:
+          type: "string"
+    LessonDto:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        student:
+          $ref: "#/components/schemas/StudentDto"
+        lessonNumber:
+          type: "integer"
+          format: "int32"
+        createdAt:
+          type: "string"
+          format: "date"
+        content:
+          type: "string"
+        homework:
+          type: "string"
+    HttpHeaders:
+      type: "object"
+      properties: { }
+    ResponseEntity:
+      type: "object"
+      properties:
+        headers:
+          $ref: "#/components/schemas/HttpHeaders"
+    HelperStudentAndLessonNumber:
+      type: "object"
+      properties:
+        lessonNumber:
+          type: "integer"
+          format: "int32"
+        student:
+          $ref: "#/components/schemas/StudentDto"
+    HelperLessonUpdate:
+      type: "object"
+      properties:
+        fromLessonDto:
+          $ref: "#/components/schemas/LessonDto"
+        toLessonDto:
+          $ref: "#/components/schemas/LessonDto"
