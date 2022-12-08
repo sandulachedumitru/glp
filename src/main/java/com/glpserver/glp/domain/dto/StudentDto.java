@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class StudentDto implements Serializable {
 	private Long id;
 	@NotNull private LocalDate createdAt = LocalDate.now();
-	@NotNull private String firstName;
-	private String lastName;
-	private String email;
+	@NotNull private String firstName = "";
+	private String lastName = "";
+	private String email = "";
 }

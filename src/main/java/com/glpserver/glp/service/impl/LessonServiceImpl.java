@@ -46,11 +46,8 @@ public class LessonServiceImpl implements LessonService {
 			return Optional.empty();
 		}
 
-		// TODO not the top of DB, but the top of list of lessons for a specific student
-		var lastLessonEntityFromDBOpt = lessonRepo.findTopByOrderByIdDesc();
-		if (lastLessonEntityFromDBOpt.isPresent()) lessonDto.setLessonNumber(lastLessonEntityFromDBOpt.get().getLessonNumber() + 1);
-		else lessonDto.setLessonNumber(1);
-
+		var lessonsEntitiesOpt = findLessonsByStudentId(studentEntity.getId());
+		lessonsEntitiesOpt.ifPresent(lessonEntities -> lessonDto.setLessonNumber(lessonEntities.size() + 1));
 		lessonDto.setId(null); // it's a creation not an update
 		lessonDto.setCreatedAt(LocalDate.now());
 		lessonDto.setStudent(studentMapper.toDto(studentEntity));

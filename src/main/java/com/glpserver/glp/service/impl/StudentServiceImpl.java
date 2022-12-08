@@ -4,6 +4,7 @@ import com.glpserver.glp.domain.dto.StudentDto;
 import com.glpserver.glp.domain.entity.StudentEntity;
 import com.glpserver.glp.domain.mapper.StudentMapper;
 import com.glpserver.glp.repository.StudentEntityRepository;
+import com.glpserver.glp.service.LessonService;
 import com.glpserver.glp.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ import java.util.Optional;
 public class StudentServiceImpl implements StudentService {
 	private final StudentEntityRepository studentRepo;
 	private final StudentMapper studentMapper;
+	private final LessonService lessonService;
 
 	@Override
 	public Optional<StudentEntity> createNewStudent(StudentDto studentDto) {
@@ -118,15 +120,23 @@ public class StudentServiceImpl implements StudentService {
 			return Optional.empty();
 		}
 
-		// TODO if a student is deleted then the list of lesson wil be deleted too
-
 		var studentEntityOpt = studentRepo.findById(studentId);
 		if (studentEntityOpt.isPresent()) {
+			deleteStudentLessonList(studentEntityOpt.get().getId());
 			studentRepo.deleteById(studentId);
 			log.info("Deleting student: SUCCESSFUL [ID={}]", studentEntityOpt.get().getId());
 		} else log.error("Deleting student: FAILED [ID={} not found ]", studentId);
 
 		return studentEntityOpt;
+	}
+
+	private void deleteStudentLessonList(Long studentId) {
+		var lessonEntitiesOpt = lessonService.findLessonsByStudentId(studentId);
+		if (lessonEntitiesOpt.isPresent()) {
+			for (var lessonEntity : lessonEntitiesOpt.get())
+				lessonService.deleteLessonById(lessonEntity.getId());
+		}
+
 	}
 
 	@Override
@@ -140,6 +150,7 @@ public class StudentServiceImpl implements StudentService {
 
 		var studentEntityOpt = findStudentByEmail(studentEmail);
 		if (studentEntityOpt.isPresent()) {
+			deleteStudentLessonList(studentEntityOpt.get().getId());
 			studentRepo.deleteStudentByEmail(studentEmail);
 			log.info("Deleting student: SUCCESSFUL [student email=[{}]", studentEntityOpt.get().getEmail());
 		} else log.error("Deleting student: FAILED [student email=[{}] not found ]", studentEmail);
@@ -158,6 +169,7 @@ public class StudentServiceImpl implements StudentService {
 
 		var studentEntityOpt = findStudentByFirstNameAndLastName(studentFirstName, studentLastName);
 		if (studentEntityOpt.isPresent()) {
+			deleteStudentLessonList(studentEntityOpt.get().getId());
 			studentRepo.deleteStudentByFirstNameAndLastName(studentFirstName, studentLastName);
 			log.info("Deleting student: SUCCESSFUL [student name=[{} {}]", studentEntityOpt.get().getFirstName(), studentEntityOpt.get().getFirstName());
 		}
