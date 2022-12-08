@@ -1,13 +1,11 @@
 package com.glpserver.glp.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.glpserver.glp.domain.entity.StudentEntity;
-import javax.validation.constraints.NotNull;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.time.LocalDate;
 
 /**
  * A DTO for the {@link StudentEntity} entity
@@ -15,13 +13,10 @@ import java.util.Set;
  */
 
 @Data
-
 public class StudentDto implements Serializable {
 	private Long id;
-	@NotNull private LocalDateTime createdAt = LocalDateTime.now();
+	@NotNull private LocalDate createdAt = LocalDate.now();
 	@NotNull private String firstName;
 	private String lastName;
 	private String email;
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private Set<LessonDto> lessons;
 }

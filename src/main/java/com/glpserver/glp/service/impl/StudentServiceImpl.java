@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,7 @@ public class StudentServiceImpl implements StudentService {
 		}
 
 		studentDto.setId(null); // it's a creation not an update
+		studentDto.setCreatedAt(LocalDate.now());
 
 		var studentEntity = studentMapper.toEntity(studentDto);
 		if (studentEntity != null) {
@@ -116,6 +118,8 @@ public class StudentServiceImpl implements StudentService {
 			return Optional.empty();
 		}
 
+		// TODO if a student is deleted then the list of lesson wil be deleted too
+
 		var studentEntityOpt = studentRepo.findById(studentId);
 		if (studentEntityOpt.isPresent()) {
 			studentRepo.deleteById(studentId);
@@ -172,6 +176,7 @@ public class StudentServiceImpl implements StudentService {
 			return Optional.empty();
 		}
 		if (toStudentDto.getFirstName() == null && toStudentDto.getLastName() == null) {
+			// email could be null because a student might not necessarily have an email
 			log.error("Updating student: FAILED [firstName and lastName cannot both be null]");
 			return Optional.empty();
 		}

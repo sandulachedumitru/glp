@@ -15,6 +15,6 @@ public interface StudentEntityRepository extends JpaRepository<StudentEntity, Lo
 	Optional<StudentEntity> findStudentByEmail(@NonNull @Email String studentEmail);
 	Optional<StudentEntity> findStudentByFirstNameAndLastName(@NonNull String studentFirstName, @NonNull String studentLastName);
 
-	Optional<StudentEntity> deleteStudentByEmail(@NonNull @Email String studentEmail);
-	Optional<StudentEntity> deleteStudentByFirstNameAndLastName(@NonNull String studentFirstName, @NonNull String studentLastName);
+	void deleteStudentByEmail(@NonNull @Email String studentEmail);
+	void deleteStudentByFirstNameAndLastName(@NonNull String studentFirstName, @NonNull String studentLastName);
 }

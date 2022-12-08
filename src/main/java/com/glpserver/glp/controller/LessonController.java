@@ -48,7 +48,7 @@ public class LessonController {
 
 	@GetMapping("/student-and-lessonNumber")
 	public ResponseEntity<LessonDto> findLessonByStudentAndLessonNumber(@RequestBody HelperStudentAndLessonNumber helper) {
-		var lessonEntityOpt = lessonService.findLessonByStudentAndLessonNumber(helper.studentDto, helper.lessonNumber);
+		var lessonEntityOpt = lessonService.findLessonByStudentAndLessonNumber(helper.student, helper.lessonNumber);
 		return ResponseEntity.of(lessonEntityOpt.map(lessonMapper::toDto));
 	}
 
@@ -77,13 +77,18 @@ public class LessonController {
 	}
 
 	@PutMapping
-	public ResponseEntity<LessonDto> updateLesson(@RequestBody LessonDto lessonDto) {
-		var lessonEntityOpt = lessonService.updateLesson(lessonDto);
+	public ResponseEntity<LessonDto> updateLesson(@RequestBody HelperLessonUpdate helper) {
+		var lessonEntityOpt = lessonService.updateLesson(helper.fromLessonDto, helper.toLessonDto);
 		return ResponseEntity.of(lessonEntityOpt.map(lessonMapper::toDto));
 	}
 
-	static class HelperStudentAndLessonNumber {
-		Integer lessonNumber;
-		StudentDto studentDto;
+	public static class HelperStudentAndLessonNumber {
+		public Integer lessonNumber;
+		public StudentDto student;
+	}
+
+	public static class HelperLessonUpdate {
+		public LessonDto fromLessonDto;
+		public LessonDto toLessonDto;
 	}
 }

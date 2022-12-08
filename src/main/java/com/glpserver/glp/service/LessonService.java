@@ -26,5 +26,5 @@ public interface LessonService {
 
 	Optional<LessonEntity> deleteLessonById(@NonNull Long lessonId);
 
-	Optional<LessonEntity> updateLesson(@NonNull LessonDto lessonDto);
+	Optional<LessonEntity> updateLesson(@NonNull LessonDto fromLessonDto, @NonNull LessonDto toLessonDto);
 }

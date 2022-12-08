@@ -2,9 +2,10 @@ package com.glpserver.glp.domain.dto;
 
 import lombok.Data;
 
+
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * A DTO for the {@link com.glpserver.glp.domain.entity.LessonEntity} entity
@@ -14,9 +15,9 @@ import java.time.LocalDateTime;
 @Data
 public class LessonDto implements Serializable {
 	private Long id;
-	private Long studentId;
-	private int lessonNumber;
-	private LocalDateTime createdAt = LocalDateTime.now();
+	@NotNull private StudentDto student;
+	@NotNull private int lessonNumber;
+	private LocalDate createdAt = LocalDate.now();
 	private String content = "";
 	private String homework = "";
 }

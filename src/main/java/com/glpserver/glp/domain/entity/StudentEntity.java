@@ -4,9 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 /**
  * @author Dumitru Săndulache (sandulachedumitru@hotmail.com)
@@ -23,14 +22,10 @@ public class StudentEntity {
 	@Column(name = "STUDENT_ID")
 	private Long id;
 
-	private LocalDateTime createdAt = LocalDateTime.now();
-
-	private String firstName = "";
+	@NotNull private LocalDate createdAt = LocalDate.now();
+	@NotNull private String firstName = "";
 	private String lastName = "";
 
 	@Column(unique = true)
 	private String email = "";
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<LessonEntity> lessons;
 }
