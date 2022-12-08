@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 /**
  * @author Dumitru Săndulache (sandulachedumitru@hotmail.com)
@@ -20,13 +21,11 @@ public class LessonEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "LESSON_ID")
 	private Long id;
-
 	@ManyToOne
-	@JoinColumn(name = "student_student_id")
-	private StudentEntity student;
-
-	private int lessonNumber;
-	private LocalDateTime createdAt = LocalDateTime.now();
-	private String content;
-	private String homework;
+	@JoinColumn(name = "STUDENT_ID")
+	@NotNull private StudentEntity student;
+	@NotNull private int lessonNumber;
+	private LocalDate createdAt = LocalDate.now();
+	private String content = "";
+	private String homework = "";
 }
