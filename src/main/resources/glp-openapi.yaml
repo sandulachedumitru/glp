@@ -1,19 +1,203 @@
 openapi: "3.0.3"
 info:
   title: "GLP Server API"
-  description: "Guitar Lesson Planner Server API"
+  description: |-
+    Guitar Lesson Planner Server API
+    
+    Some useful links:
+    - [The GLP Server repository](https://github.com/sandulachedumitru/glp)
+  termsOfService: https://swagger.io/terms/
+  contact:
+    email: sandulachedumitru@hotmail.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: "1.0.0"
 servers:
   - url: "https://localhost:8080"
 tags:
+  - name: student
+    description: Everything about your Student
   - name: lesson
     description: Access to student's lessons
 paths:
+  /student:
+    post:
+      tags:
+        - student
+      summary: "CREATE new student"
+      operationId: "createNewStudent"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+    get:
+      tags:
+        - student
+      summary: "FIND all students"
+      operationId: "findAllStudents"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+    put:
+      tags:
+        - student
+      summary: "UPDATE student"
+      operationId: "updateStudent"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HelperUpdateStudent"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+  /student/id/{studentId}:
+    get:
+      tags:
+        - student
+      summary: "FIND student by ID"
+      operationId: "findStudentById"
+      parameters:
+        - name: "studentId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+    delete:
+      tags:
+        - student
+      summary: "DELETE student by ID"
+      operationId: "deleteStudentById"
+      parameters:
+        - name: "studentId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+  /student/email/{studentEmail}:
+    get:
+      tags:
+        - student
+      summary: "FIND student by email"
+      operationId: "findStudentByEmail"
+      parameters:
+        - name: "studentEmail"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+    delete:
+      tags:
+        - student
+      summary: "DELETE student by email"
+      operationId: "deleteStudentByEmail"
+      parameters:
+        - name: "studentEmail"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+  /student/name:
+    get:
+      tags:
+        - student
+      summary: "FIND student by firstname and lastname"
+      operationId: "findStudentByFirstNameAndLastName"
+      parameters:
+        - name: "studentFirstName"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+        - name: "studentLastName"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+    delete:
+      tags:
+        - student
+      summary: "DELETE student by firstname and lastname"
+      operationId: "deleteStudentByFirstNameAndLastName"
+      parameters:
+        - name: "studentFirstName"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+        - name: "studentLastName"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
   /lesson:
     post:
       tags:
         - lesson
-      summary: "POST lesson"
+      summary: "CREATE new lesson"
       operationId: "createNewLesson"
       requestBody:
         content:
@@ -31,7 +215,7 @@ paths:
     get:
       tags:
         - lesson
-      summary: "GET lesson"
+      summary: "FIND all lessons"
       operationId: "findAllLessons"
       responses:
         "200":
@@ -43,7 +227,7 @@ paths:
     put:
       tags:
         - lesson
-      summary: "PUT lesson"
+      summary: "UPDATE lesson"
       operationId: "updateLesson"
       requestBody:
         content:
@@ -62,7 +246,7 @@ paths:
     get:
       tags:
         - lesson
-      summary: "GET lesson/student/{studentId}"
+      summary: "FIND lessons by student ID"
       operationId: "findLessonsByStudentId"
       parameters:
         - name: "studentId"
@@ -82,7 +266,7 @@ paths:
     get:
       tags:
         - lesson
-      summary: "GET lesson/id/{lessonId}"
+      summary: "FIND lesson by ID"
       operationId: "findLessonById"
       parameters:
         - name: "lessonId"
@@ -101,7 +285,7 @@ paths:
     delete:
       tags:
         - lesson
-      summary: "DELETE lesson/id/{lessonId}"
+      summary: "DELETE lesson by ID"
       operationId: "deleteLessonById"
       parameters:
         - name: "lessonId"
@@ -121,7 +305,7 @@ paths:
     get:
       tags:
         - lesson
-      summary: "GET lesson/student-and-lessonNumber"
+      summary: "FIND lesson by student and lesson number"
       operationId: "findLessonByStudentAndLessonNumber"
       requestBody:
         content:
@@ -140,7 +324,7 @@ paths:
     get:
       tags:
         - lesson
-      summary: "GET lesson/student-firstName-lastName-and-lessonNumber"
+      summary: "FIND lesson by student firstname and lastname and lesson number"
       operationId: "findLessonByStudentFirstNameAndStudentLastNameAndLessonNumber"
       parameters:
         - name: "studentFirstName"
@@ -170,7 +354,7 @@ paths:
     get:
       tags:
         - lesson
-      summary: "GET lesson/student-id-and-lessonNumber"
+      summary: "FIND lesson by student ID and lesson number"
       operationId: "findLessonByStudentIdAndLessonNumber"
       parameters:
         - name: "studentId"
@@ -196,7 +380,7 @@ paths:
     get:
       tags:
         - lesson
-      summary: "GET lesson/student-email-and-lessonNumber"
+      summary: "FIND lesson by student email and lesson number"
       operationId: "findLessonByStudentEmailAndLessonNumber"
       parameters:
         - name: "studentEmail"
@@ -275,3 +459,10 @@ components:
           $ref: "#/components/schemas/LessonDto"
         toLessonDto:
           $ref: "#/components/schemas/LessonDto"
+    HelperUpdateStudent:
+      type: "object"
+      properties:
+        fromStudentDto:
+          $ref: "#/components/schemas/StudentDto"
+        toStudentDto:
+          $ref: "#/components/schemas/StudentDto"

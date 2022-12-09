@@ -4,10 +4,15 @@ info:
   description: "Guitar Lesson Planner Server API"
   version: "1.0.0"
 servers:
-  - url: "https://glp"
+  - url: "https://localhost:8080"
+tags:
+  - name: student
+    description: Everything about your Student
 paths:
   /student:
     post:
+      tags:
+        - student
       summary: "POST student"
       operationId: "createNewStudent"
       requestBody:
@@ -24,6 +29,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseEntity"
     get:
+      tags:
+        - student
       summary: "GET student"
       operationId: "findAllStudents"
       responses:
@@ -34,6 +41,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseEntity"
     put:
+      tags:
+        - student
       summary: "PUT student"
       operationId: "updateStudent"
       requestBody:
@@ -51,6 +60,8 @@ paths:
                 $ref: "#/components/schemas/ResponseEntity"
   /student/id/{studentId}:
     get:
+      tags:
+        - student
       summary: "GET student/id/{studentId}"
       operationId: "findStudentById"
       parameters:
@@ -68,6 +79,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseEntity"
     delete:
+      tags:
+        - student
       summary: "DELETE student/id/{studentId}"
       operationId: "deleteStudentById"
       parameters:
@@ -86,6 +99,8 @@ paths:
                 $ref: "#/components/schemas/ResponseEntity"
   /student/email/{studentEmail}:
     get:
+      tags:
+        - student
       summary: "GET student/email/{studentEmail}"
       operationId: "findStudentByEmail"
       parameters:
@@ -102,6 +117,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseEntity"
     delete:
+      tags:
+        - student
       summary: "DELETE student/email/{studentEmail}"
       operationId: "deleteStudentByEmail"
       parameters:
@@ -119,6 +136,8 @@ paths:
                 $ref: "#/components/schemas/ResponseEntity"
   /student/name:
     get:
+      tags:
+        - student
       summary: "GET student/name"
       operationId: "findStudentByFirstNameAndLastName"
       parameters:
@@ -140,6 +159,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseEntity"
     delete:
+      tags:
+        - student
       summary: "DELETE student/name"
       operationId: "deleteStudentByFirstNameAndLastName"
       parameters:
