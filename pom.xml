@@ -21,6 +21,10 @@
         <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
         <org.projectlombok.version>1.18.24</org.projectlombok.version>
         <org.projectlombok.lombok-mapstruct-binding.version>0.2.0</org.projectlombok.lombok-mapstruct-binding.version>
+        <version.swagger.codegen>2.2.1</version.swagger.codegen>
+        <yaml.file>${project.basedir}/src/main/resources/Api.yaml</yaml.file>
+        <generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
+        <generated-sources-java-path>main/java</generated-sources-java-path>
     </properties>
 
     <dependencies>
@@ -58,14 +62,19 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.restdocs</groupId>
-            <artifactId>spring-restdocs-mockmvc</artifactId>
-            <scope>test</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.restdocs</groupId>-->
+<!--            <artifactId>spring-restdocs-mockmvc</artifactId>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.6.4</version>
         </dependency>
     </dependencies>
 
