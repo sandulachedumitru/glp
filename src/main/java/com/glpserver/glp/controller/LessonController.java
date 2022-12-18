@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
  * @author Dumitru Săndulache (sandulachedumitru@hotmail.com)
  */
 
+@CrossOrigin
 @RestController
 @RequestMapping("/lesson")
 @RequiredArgsConstructor
